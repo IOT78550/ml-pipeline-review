@@ -39,8 +39,11 @@ class TaxiFareModel:
     """
         return self.model.predict(X)
 
+    
 """
-Исправленный вариант кода с описанием:
+Исправленный вариант кода с описанием ниже
+"""
+"""
 Модуль определения и обучения модели прогнозирования стоимости 
 поездки такси
 
@@ -52,7 +55,6 @@ class TaxiFareModel:
         * оценка качества (evaluate)
         * подбор гиперпараметров (tune_hyperparameters)
         * сохранение/загрузка модели и конфига (save / load)
-"""
 """
 from typing import Optional, Dict, Any
 
@@ -81,9 +83,7 @@ MODEL_CONFIG: Dict[str, Any] = {
     "subsample": 0.8,
 }
 
-
-class TaxiFareModel:
-"""    
+class TaxiFareModel:    
     """
     Модель прогнозирования стоимости поездки такси 
     на базе GradientBoostingRegressor
@@ -102,24 +102,16 @@ class TaxiFareModel:
     config: конфигурация гиперпараметров, с которой
     инициализирована модель
     """
-    """
 
     def __init__(self, 
                  config: Optional[Dict[str, Any]] = None) -> None:
-    """
         """
-        Инициализирует модель с заданной конфигурацией.
-
+        Инициализирует модель с заданной конфигурацией
+        
         Args:
         config: словарь с гиперпараметрами 
         GradientBoostingRegressor (если None, используется 
         базовый MODEL_CONFIG)
-
-        Пример:
-        >>> model = TaxiFareModel()
-        >>> custom = {"n_estimators": 200, "max_depth": 3}
-        >>> model2 = TaxiFareModel(config=custom)
-        """
         """
         self.config: Dict[str, Any] = (config or MODEL_CONFIG).copy()
         # Гарантируем наличие random_state в конфиге
@@ -134,7 +126,6 @@ class TaxiFareModel:
     # Базовые методы: fit / predict / evaluate
     def fit(self, X: pd.DataFrame, y: pd.Series) -> None:
         """
-        """
         Обучает модель на переданных данных
 
         Args:
@@ -144,7 +135,6 @@ class TaxiFareModel:
         Raises:
         ValueError: если данные пустые или размеры 
         X и y не совпадают
-        """
         """
         if X.empty or y.empty:
             raise ValueError("Входные данные не могут быть пустыми")
@@ -160,7 +150,6 @@ class TaxiFareModel:
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """
-        """
         Делает предсказания для новых данных
 
         Args:
@@ -171,7 +160,6 @@ class TaxiFareModel:
 
         Raises:
         RuntimeError: если модель не была обучена
-        """
         """
         if not self.is_fitted:
             raise RuntimeError(
@@ -184,11 +172,10 @@ class TaxiFareModel:
                  X: pd.DataFrame, 
                  y: pd.Series) -> Dict[str, float]:
         """
-        """
         Оценивает качество модели на заданных данных
 
         Вычисляет метрики:
-        - r2: коэффициент детерминации;
+        - r^2: коэффициент детерминации;
         - rmse: корень из среднеквадратичной ошибки;
         - mae: средняя абсолютная ошибка
 
@@ -201,7 +188,6 @@ class TaxiFareModel:
 
         Raises:
         RuntimeError: если модель не была обучена
-        """
         """
         if not self.is_fitted:
             raise RuntimeError("Модель не обучена")
@@ -228,7 +214,6 @@ class TaxiFareModel:
         verbose: int = 0,
     ) -> Dict[str, Any]:
         """
-        """
         Подбирает гиперпараметры модели с помощью 
         GridSearchCV и фиксирует лучший конфиг
 
@@ -251,7 +236,6 @@ class TaxiFareModel:
         - переинициализирует self.model с лучшим конфигом;
         - обучает модель на всех данных X, y с этим конфигом;
         - помечает модель как обученную (is_fitted = True)
-        """
         """
         if X.empty or y.empty:
             raise ValueError("Входные данные не могут быть пустыми")
@@ -304,14 +288,12 @@ class TaxiFareModel:
              model_path: str, 
              config_path: Optional[str] = None) -> None:
         """
-        """
         Сохраняет обученную модель и (опционально) 
         конфиг с метриками
 
         Args:
         model_path: Путь для сохранения модели (.pkl)
         config_path: Путь для сохранения конфига и метрик (.json)
-        """
         """
         model_file = Path(model_path)
         model_file.parent.mkdir(parents=True, exist_ok=True)
@@ -337,7 +319,6 @@ class TaxiFareModel:
     def load(cls, model_path: str,
              config_path: Optional[str] = None) -> "TaxiFareModel":
         """
-        """
         Загружает обученную модель с конфигом и метриками
 
         Args:
@@ -351,7 +332,6 @@ class TaxiFareModel:
 
         Raises:
         FileNotFoundError: если файл модели не найден
-        """
         """
         model_file = Path(model_path)
         if not model_file.exists():
@@ -381,4 +361,3 @@ class TaxiFareModel:
         instance.metrics = metrics
 
         return instance
-        """
