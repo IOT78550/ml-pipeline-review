@@ -1,2 +1,83 @@
 pandas==1.2.4
 scikit-learn==0.24.1
+
+"""
+Возожно лучшим решением было использовать более новые версии библиотек
+вместо устаревших:
+pandas>=2.0.0,<3.0.0
+scikit-learn>=1.3.0,<2.0.0
+
+Также необходимо добавить критические зависимости для numpy и pytest 
+(которые используются в проекте), а также указание
+на совместимость Python версии.
+
+Опционально можно было бы сделать разделение файла requirements.txt
+на dev и prod зависимости и добавить файл pyproject.toml, например:
+
+файл requirements-base.txt (для production) включал бы:
+pandas>=2.0.0,<3.0.0  # ограничиваем версию (совместимость)
+scikit-learn>=1.3.0,<2.0.0
+numpy>=1.24.0,<2.0.0
+joblib>=1.3.0  # используется scikit-learn для сохранения моделей
+
+файл requirements-dev.txt (для разработки) включал бы:
+-r requirements-base.txt  # импорт base зависимостей
+pytest>=7.4.0             # запуск тестов
+pytest-cov>=4.1.0         # покрытие кода тестами
+black>=23.0.0             # форматирование кода
+flake8>=6.0.0             # проверка стиля (соответствие PEP8)
+mypy>=1.5.0               # проверка типов данных
+pytest-mock>=3.11.0       # создание mock объектов в тестах
+isort>=5.12.0             # сортировка импортов (опционально)
+
+файл pyproject.toml (лучше, чем setup.py) включал бы:
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taxi-fare-predictor"
+version = "0.1.0"
+description = "ML model for predicting taxi fare"
+requires-python = ">=3.8,<3.12"
+dependencies = [
+    "pandas>=2.0.0,<3.0.0",
+    "scikit-learn>=1.3.0,<2.0.0",
+    "numpy>=1.24.0,<2.0.0",
+    "joblib>=1.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+]
+
+Установка/использование:
+pip install -r requirements-dev.txt  # версия для разработки
+pip install -r requirements-base.txt # версия для production
+
+В итоге у нас будет такая структура requirements:
+requirements-base.txt      ← Production зависимости
+├── pandas>=2.0.0
+├── scikit-learn>=1.3.0
+├── numpy>=1.24.0
+└── joblib>=1.3.0
+
+requirements-dev.txt       ← Разработка + base
+├── -r requirements-base.txt
+├── pytest>=7.4.0
+├── black>=23.0.0
+├── flake8>=6.0.0
+├── mypy>=1.5.0
+└── pytest-mock>=3.11.0
+
+pyproject.toml ← Метаинформация пакета
+├── version
+├── description
+├── dependencies  # то же что в base
+└── dev  # то же что в dev
+"""
