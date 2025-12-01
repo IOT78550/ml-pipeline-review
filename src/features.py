@@ -19,17 +19,17 @@ def add_time_features(df):
 
 Также следует добавить в функцию аннотацию типов данных
 и написать про работу функции
-
-Ниже представлен исправленный вариант:
 """
+
+"""
+Ниже представлен исправленный вариант:
 """
 import pandas as pd
 from typing import List
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
 """
-"""
-Добавляет временные признаки из столбца 'pickup_datetime'.
+Добавляет временные признаки из столбца 'pickup_datetime'
     
     Создает новые столбцы:
     - hour: час суток (0-23)
@@ -44,12 +44,6 @@ def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
     Raises:
         KeyError: если столбец 'pickup_datetime' отсутствует
         ValueError: если невозможно распарсить дату
-        
-    Example:
-        >>> df = pd.DataFrame({'pickup_datetime': ['2020-01-01 10:30:00']})
-        >>> result = add_time_features(df)
-        >>> assert 'hour' in result.columns
-"""
 """
 # Создание копии для избежания модификации исходных данных
     df_copy = df.copy()
@@ -75,4 +69,3 @@ def get_feature_names() -> List[str]:
     что полезно для документации и отладки
     """
     return ['hour', 'day_of_week']
-"""
